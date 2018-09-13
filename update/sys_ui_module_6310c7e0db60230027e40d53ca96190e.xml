@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_module">
+    <sys_ui_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="Git Update Set Upload">af10c7e0db60230027e40d53ca96190b</application>
+        <filter/>
+        <name>Git Update Set Uploads</name>
+        <order/>
+        <path/>
+        <path_relative_to_root>false</path_relative_to_root>
+        <roles>x_80927_git_keep.git_update_set_upload_user</roles>
+        <sys_class_name>sys_ui_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-11 18:23:52</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6310c7e0db60230027e40d53ca96190e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Git Update Set Uploads</sys_name>
+        <sys_package display_value="Git Keep" source="x_80927_git_keep">ee4f76a0db60230027e40d53ca96194e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Git Keep">ee4f76a0db60230027e40d53ca96194e</sys_scope>
+        <sys_update_name>sys_ui_module_6310c7e0db60230027e40d53ca96190e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-09-11 18:23:52</sys_updated_on>
+        <table>x_80927_git_keep_git_update_set_upload</table>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+    </sys_ui_module>
+</record_update>

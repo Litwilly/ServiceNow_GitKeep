@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_80927_git_keep.GitMyStuff</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>GitMyStuff</name>
+        <script><![CDATA[var GitMyStuff = Class.create();
+GitMyStuff.prototype = {
+	initialize: function() {
+		this.UPDSETFILTER = gs.getProperty("x_80927_git_keep.updatesetfilter");
+	},
+
+	// Insert or update the Git Uploads table with the latest upload info
+	updateGitUpload: function(sysid, filename, sha){
+		var git = new GlideRecord("x_80927_git_keep_git_update_set_upload");
+		if (git.get("u_local_update_set", sysid)){
+			git.u_sha = sha;
+			git.u_last_upload = new GlideDateTime();
+			git.u_file_name = filename;
+			git.update();
+		}else{
+			git.initialize();
+			git.u_local_update_set = sysid;
+			git.u_sha = sha;
+			git.u_last_upload = new GlideDateTime();
+			git.u_file_name = filename;
+			git.insert();
+		}
+	},
+
+	// Get timestamp of latest customer update under a specific update set
+	getLastUpdateDate: function(sysid){
+		var custUpdate = new GlideRecord("sys_update_xml");
+		custUpdate.addQuery("update_set", sysid);
+		custUpdate.orderByDesc("sys_updated_on");
+		custUpdate.setLimit(1);
+		custUpdate.query();
+		if (custUpdate.next()){
+			return custUpdate.sys_updated_on;
+		}else{
+			return false;
+		}
+	},
+
+	// Extract and back up to GitHub a specific update set
+	backupUpdateSet: function(sysid, name){
+		var fileName = gs.getProperty("instance_name") + "-" + sysid + ".xml";
+		var usetHelper = new UpdateSetUtil();
+		var updateSetContents = usetHelper.copyAndExtract(sysid);
+		var util = new GitWSHelper();
+		var sha = util.uploadFile(fileName, updateSetContents, name);
+		this.updateGitUpload(sysid, fileName, sha);
+	},
+
+	// Main code, to be called by scheduled job
+	process: function(){
+		// Iterate through filtered list of update sets
+		var updateSet = new GlideRecord("sys_update_set");
+		updateSet.addEncodedQuery(this.UPDSETFILTER);
+		updateSet.query();
+		while (updateSet.next()){
+			// See if the update set was ever uploaded to Git
+			var gitUploads = new GlideRecord("x_80927_git_keep_git_update_set_upload");
+			if (gitUploads.get("u_local_update_set", updateSet.sys_id)){
+				var lastUpdate = this.getLastUpdateDate(updateSet.sys_id);
+				var lastUpload = gitUploads.u_last_upload;
+				var updatedOn = updateSet.sys_updated_on;
+				// If it was, check the date of the last customer update - Only backup update set if: 
+				// 1) no customer updates have occurred, but the update set itself has changed since the last upload, 
+				// 2) some customer updates have occured on it since last upload, or 
+				// 3) there are older customer updates but the update set record itself has changed since the last upload
+				if ((!lastUpdate && updatedOn > lastUpload) || lastUpdate > lastUpload || updatedOn > lastUpload){
+					this.backupUpdateSet(updateSet.sys_id, updateSet.name);
+				}
+			}else{
+				// Update set was never uploaded to Git, back it up
+				this.backupUpdateSet(updateSet.sys_id, updateSet.name);
+			}
+		}
+	},
+
+	type: 'GitMyStuff'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-11 18:50:38</sys_created_on>
+        <sys_id>f7a5cf64db60230027e40d53ca961965</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>GitMyStuff</sys_name>
+        <sys_package display_value="Git Keep" source="x_80927_git_keep">ee4f76a0db60230027e40d53ca96194e</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Git Keep">ee4f76a0db60230027e40d53ca96194e</sys_scope>
+        <sys_update_name>sys_script_include_f7a5cf64db60230027e40d53ca961965</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-09-13 01:03:00</sys_updated_on>
+    </sys_script_include>
+</record_update>

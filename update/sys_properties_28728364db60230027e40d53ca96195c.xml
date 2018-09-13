@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>GitHub password</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_80927_git_keep.ghpwd</name>
+        <read_roles/>
+        <suffix>ghpwd</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-11 18:34:26</sys_created_on>
+        <sys_id>28728364db60230027e40d53ca96195c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_80927_git_keep.ghpwd</sys_name>
+        <sys_package display_value="Git Keep" source="x_80927_git_keep">ee4f76a0db60230027e40d53ca96194e</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Git Keep">ee4f76a0db60230027e40d53ca96194e</sys_scope>
+        <sys_update_name>sys_properties_28728364db60230027e40d53ca96195c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-09-13 00:24:34</sys_updated_on>
+        <type>password</type>
+        <value>{{dflt-gpaes}}YyW2nLKaL64yZN8TcA8A+Q==</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=28728364db60230027e40d53ca96195c"/>
+</record_update>
